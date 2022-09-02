@@ -34,6 +34,10 @@ describe('[FLASH RECEIVER EXPLOIT]', async function () {
 
     it('Exploit', async function () {
         // YOUR EXPLOIT HERE
+        
+        let exploit = await (await ethers.getContractFactory('FlashReceiverExploit', deployer)).deploy(this.receiver.address)
+
+        await exploit.connect(attacker).run();
 
     })
 
