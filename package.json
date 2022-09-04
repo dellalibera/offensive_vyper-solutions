@@ -13,6 +13,7 @@
     "test:flash-receiver": "hardhat test test/flash-receiver.challenge.js",
     "test:meta-token": "hardhat test test/meta-token.challenge.js",
     "test:ownable-proxy": "hardhat test test/ownable-proxy.challenge.js",
+    "test:ownable-proxy-2": "hardhat test test/ownable-proxy.challenge_2.js",
     "test:password-vault": "hardhat test test/password-vault.challenge.js",
     "test:unstoppable-auction": "hardhat test test/unstoppable-auction.challenge.js"
   },
